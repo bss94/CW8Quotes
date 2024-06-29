@@ -14,7 +14,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home/>}>
           </Route>
-          <Route path="/quotes/:category" element={<QuoteForm/>}/>
+          <Route path="/quotes/:category" element={<Home/>}/>
           <Route path="/quotes/:id/edit" element={<QuoteForm/>}/>
           <Route path="/add-quote" element={<QuoteForm/>}/>
           <Route path="*" element={<h1>not found</h1>}/>

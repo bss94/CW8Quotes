@@ -9,12 +9,10 @@ const Toolbar = () => {
         <NavLink className="navbar-brand" to="/">
           Quotes Central
         </NavLink>
-
         <Nav className="ms-auto">
           <NavLink className="nav-link" to="/">Quotes</NavLink>
-          <NavLink className="nav-link" to="/add-post">Submit new quote</NavLink>
+          <NavLink className="nav-link" to="/add-quote">Submit new quote</NavLink>
         </Nav>
-
       </Container>
     </Navbar>
   );
