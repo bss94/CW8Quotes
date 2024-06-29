@@ -102,7 +102,7 @@ const QuoteForm = () => {
                 onChange={changeField}
                 required
               >
-                <option value=''>Select category</option>
+                <option value="">Select category</option>
                 {CATEGORIES.map(el => {
                   return <option value={el.id} key={Math.random() * 1000}>{el.title}</option>;
                 })}

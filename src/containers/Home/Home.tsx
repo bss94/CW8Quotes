@@ -4,46 +4,53 @@ import axiosApi from '../../axiosApi';
 import {Col, Spinner} from 'react-bootstrap';
 import QuoteList from '../../components/QuoteList/QuoteList';
 import QuoteNav from '../../components/QuoteNav/QuoteNav';
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import {CATEGORIES} from '../../constants';
 
 const Home = () => {
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const currentCategory = useParams();
+  const navigate = useNavigate();
 
   const fetchQuotes = useCallback(async () => {
     setIsLoading(true);
-    let response=null;
-    if(Object.keys(currentCategory).length === 0){
-       response = await axiosApi.get<QuotesApi | null>('/quotes.json');
-    }else {
+    let response;
+    if (Object.keys(currentCategory).length === 0) {
+      response = await axiosApi.get<QuotesApi | null>('/quotes.json');
+    } else {
       response = await axiosApi.get<QuotesApi | null>(`/quotes.json?orderBy="category"&equalTo="${currentCategory.category}"`);
     }
     const quoteResponse = response.data;
-    if (quoteResponse !== null) {
+    if (quoteResponse !== null && Object.keys(quoteResponse).length !== 0) {
       const quotes: Quote[] = Object.keys(quoteResponse).map((id: string) => {
         return {
           ...quoteResponse[id],
           id,
         };
       });
-      console.log(quotes);
       setQuotes(quotes);
     } else {
       setQuotes([]);
     }
     setIsLoading(false);
   }, [currentCategory]);
+
+  const deleteQuote = useCallback(async (id) => {
+    await axiosApi.delete(`/quotes/${id}.json`);
+    navigate(`/`);
+  }, [navigate]);
+
   useEffect(() => {
     void fetchQuotes();
-  }, [fetchQuotes]);
+  }, [fetchQuotes, deleteQuote]);
 
   let pagesTitle = 'All quotes';
-  if(Object.keys(currentCategory).length !== 0){
-    pagesTitle=CATEGORIES.find(el=>{return  el.id===currentCategory.category}).title
+  if (Object.keys(currentCategory).length !== 0) {
+    pagesTitle = CATEGORIES.find(el => {
+      return el.id === currentCategory.category;
+    }).title;
   }
-
   return (
     <>
       <Col/>
@@ -57,7 +64,7 @@ const Home = () => {
         )}
         {quotes.length > 0 && !isLoading && (
           <>
-            <QuoteList quotes={quotes}/>
+            <QuoteList quotes={quotes} deleteQuote={deleteQuote}/>
           </>
         )}
         {isLoading && (
@@ -70,5 +77,4 @@ const Home = () => {
     </>
   );
 };
-
 export default Home;
