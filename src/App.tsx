@@ -2,6 +2,7 @@ import Toolbar from './components/Toolbar/Toolbar';
 import {Container, Row} from 'react-bootstrap';
 import {Route, Routes} from 'react-router-dom';
 import QuoteForm from './containers/QuoteForm/QuoteForm';
+import Home from './containers/Home/Home';
 
 const App = () => (
   <>
@@ -11,10 +12,11 @@ const App = () => (
     <Container>
       <Row>
         <Routes>
-          <Route path="/" element={<QuoteForm/>}>
+          <Route path="/" element={<Home/>}>
           </Route>
-          <Route path="/quotes/:id/edit" element={<div/>}/>
-          <Route path="/add-quote" element={<div/>}/>
+          <Route path="/quotes/:category" element={<QuoteForm/>}/>
+          <Route path="/quotes/:id/edit" element={<QuoteForm/>}/>
+          <Route path="/add-quote" element={<QuoteForm/>}/>
           <Route path="*" element={<h1>not found</h1>}/>
         </Routes>
       </Row>
